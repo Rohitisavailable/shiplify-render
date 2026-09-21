@@ -21,12 +21,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$5a%%cj78_@&x045mb1bqe1el%$&5bnxd%qi=w*=xqb*txl2u-'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'local-development-secret-key-change-in-production-7f3c9a2b',
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+IS_PRODUCTION = os.environ.get('DJANGO_ENV', '').lower() == 'production'
+DEBUG = os.environ.get('DEBUG', str(not IS_PRODUCTION)).lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = ['shiplify-render.onrender.com']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,testserver,shiplify-render.onrender.com').split(',')
 
 
 
@@ -79,13 +83,11 @@ WSGI_APPLICATION = 'CMS.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),   
-    }
+    'default': dj_database_url.config(
+        default=f'sqlite:///{os.path.join(BASE_DIR, "db.sqlite3")}',
+        conn_max_age=600,
+    )
 }
-
-DATABASES["default"] = dj_database_url.parse("postgresql://django_shiplify_render_user:HcDXALMYiGdqOCMZDdTuRhXtI99sXani@dpg-cvnc0jumcj7s738h2cg0-a.oregon-postgres.render.com/django_shiplify_render")
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -133,11 +135,24 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 
 LOGIN_REDIRECT_URL = 'main'
-LOGIN_URL = 'service-home'
+LOGIN_URL = 'login'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = '587'
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'your email id'
-EMAIL_HOST_PASSWORD = 'your app password'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = os.environ.get(
+    'EMAIL_BACKEND',
+    'django.core.mail.backends.console.EmailBackend',
+)
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 'yes')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'no-reply@shiplify.local')
+
+SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', str(IS_PRODUCTION)).lower() in ('true', '1', 'yes')
+SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', str(IS_PRODUCTION)).lower() in ('true', '1', 'yes')
+CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE', str(IS_PRODUCTION)).lower() in ('true', '1', 'yes')
+SECURE_HSTS_SECONDS = int(os.environ.get('SECURE_HSTS_SECONDS', '31536000' if IS_PRODUCTION else '0'))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = os.environ.get('SECURE_HSTS_INCLUDE_SUBDOMAINS', str(IS_PRODUCTION)).lower() in ('true', '1', 'yes')
+SECURE_HSTS_PRELOAD = os.environ.get('SECURE_HSTS_PRELOAD', str(IS_PRODUCTION)).lower() in ('true', '1', 'yes')
