@@ -1,58 +1,21 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% if title %}
-        <title>Shiplify - {{ title }}</title>
-    {% else %}
-        <title>Shiplify</title>
-    {% endif %}
-</head>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<style type="text/css">
-    fieldset {
-        margin-right: 700px;
-        margin-left: 700px;
-    }
-    h1 {
-        font-family: 'Roboto', sans-serif;
-    }
-</style>
-<body>
-    {% if messages %}
-        {% for message in messages %}
-            <div>
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-    <h1 style="margin-top: 60px;"><b><center></b>
-    <a href="{% url 'about' %}">
-    <img src="{% static 'images/Shiplify_logo.png' %}" width="500" height="300"></a></center></h1><br>
-    <div style="margin-top: 110px;">
-        <p><center>Login using your username.</center></p><br>
-        <div>
-            <center>
-            <div>
-                <legend>
-                <form method="POST">
-                    {% csrf_token %}
-                    <fieldset>
-                        {{ form.as_p }}
-                    </fieldset>
-                    <div>
-                        <button class="btn btn-outline-info" type="submit">Login</button>
-                    </div>
-                </form>
-                </legend>
-            </div><br><br>
-            <p>Not yet Registered ? <a href="{% url 'register' %}">Register now!</a></p>
-            <p>Forgot password ? <a href="{% url 'password_reset' %}">Reset</a></p>
-            <p>Are you an admin ? <a href="{% url 'admin:login' %}">click here</a></p><br>
-            </center>
-        </div>
-    </div>
-</body>
-</html>
+{% extends "couriermanage/base.html" %}
+{% block content %}
+<section class="landing-hero">
+  <div class="landing-copy">
+    <span class="eyebrow">A clearer way to move parcels</span>
+    <h1>Shipping that keeps its <em>promise.</em></h1>
+    <p>Shiplify gives teams one calm place to track incoming packages, coordinate carriers, and keep every collection moving.</p>
+    <div class="landing-actions"><a class="button" href="{% url 'login' %}">Open package desk</a><a class="text-link" href="{% url 'about' %}">See how it works <span aria-hidden="true">&#8594;</span></a></div>
+  </div>
+  <div class="hero-image-wrap"><img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1100&q=85" alt="Warehouse shelves with organised shipping boxes"><span class="image-note">On time, in view</span></div>
+</section>
+<section class="page-shell landing-section">
+  <div class="section-heading"><div><span class="eyebrow">Built for the handoff</span><h2>From arrival to collection, without the guesswork.</h2></div><p>Good logistics feel invisible. Shiplify keeps the details visible so your team can focus on the next delivery.</p></div>
+  <div class="feature-grid">
+    <article class="feature-card"><span class="feature-number">01</span><h3>Know what arrived</h3><p>See parcel names, numbers, carrier details, and arrival dates in one glance.</p></article>
+    <article class="feature-card feature-image"><img src="https://images.unsplash.com/photo-1494412651409-8963ce7935a7?auto=format&fit=crop&w=900&q=85" alt="Cargo ship travelling across the water"><div><span class="feature-number">02</span><h3>Keep every route clear</h3><p>Search by package or service when the desk gets busy.</p></div></article>
+    <article class="feature-card"><span class="feature-number">03</span><h3>Make collection simple</h3><p>Give every customer a clear next step and a reliable source of truth.</p></article>
+  </div>
+</section>
+<section class="landing-callout"><div><span class="eyebrow">Ready when you are</span><h2>Your package desk is one click away.</h2></div><div class="callout-actions"><a class="social-link" href="https://github.com/Rohitisavailable" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">&#8599;</span></a><a class="social-link" href="https://www.linkedin.com/in/rohit-mahajan1202/" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">&#8599;</span></a><a class="button button-light" href="{% url 'login' %}">Sign in to Shiplify</a></div></section>
+{% endblock content %}
