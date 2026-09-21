@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: shiplify-render
+    runtime: python
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate
+    startCommand: gunicorn CMS.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: DJANGO_ENV
+        value: production
