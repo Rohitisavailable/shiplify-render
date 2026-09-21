@@ -1,21 +1,20 @@
 {% extends "couriermanage/base.html" %}
 {% block content %}
-	<div class="content-section" style="margin-left: 130px">
+	<section class="page-shell content-narrow">
+	<div class="surface form-area">
 		<form method="POST">
 			{% csrf_token %}
 			<fieldset class="form-group">
-				<legend>Shiply-registration</legend>
-				<p>*NOTE:- username is set by you</p>
+				<legend><h1>Create your account</h1></legend>
+				<p class="page-intro">Set up access to your Shiplify package desk.</p>
 				{{ form.as_p }}
 			</fieldset>
-			<div class="form-group">
-				<button class="btn btn-outline-info" type="submit">Sign up</button>
+			<div class="form-actions">
+				<button class="button" type="submit">Create account</button>
 			</div>
 		</form>
-		<div class="border-top pt-3">
-			<small class="text-muted">
-			Already have an account? <a class="ml-2" href="{% url 'service-home' %}">Sign in</a>
-		</small>
-		</div>
+		<p>Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
 	</div>
+	</div>
+	</section>
 {% endblock content %}
