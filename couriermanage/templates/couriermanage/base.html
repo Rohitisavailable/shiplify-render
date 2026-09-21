@@ -1,52 +1,27 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
-	{% if title %}
-		<title>Shiply- {{ title }}</title>
-	{% else %}
-		<title>Shiply</title>
-	{% endif %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a43">
+  <title>{% if title %}Shiplify | {{ title }}{% else %}Shiplify{% endif %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
 </head>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="{% url 'service-home' %}">Shiply</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <div class="nav-item active">
-        <a class="nav-link" href="{% url 'main' %}">Home</a>
-      </div>
-       
-    <div class="navbar-nav">
-        <a class="nav-link" href="{% url 'about' %}">About Shiply</a>
-        {% if user.is_authenticated %}
-        	<a class="nav-link" href="{% url 'logout' %}">Logout</a>
-        {% else %}
-        	<a class="nav-link" href="{% url 'service-home' %}">Login</a>
-        	<a class="nav-link" href="{% url 'register' %}">Register</a>
-        {% endif %}
-    </div>
-    </ul>
-    {% if user.is_authenticated %}
-      <form class="form-inline my-2 my-lg-0" method="get">
-        <input class="form-control mr-sm-2" type="search" name="q" value="{{ request.GET.q }}" placeholder="Enter your Delivery partner" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-    {% endif %}
-  </div>
-</nav>
-
 <body>
-	{% if messages %}
-		{% for message in messages %}
-			<div>
-				{{ message }}
-			</div>
-		{% endfor %}
-	{% endif %}
-	{% block content %}{% endblock%}
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="{% url 'service-home' %}"><span class="brand-mark">S</span><span>shiplify</span></a>
+      <div class="nav-links">
+        {% if user.is_authenticated %}<a href="{% url 'main' %}">Dashboard</a><a href="{% url 'upcoming' %}">Coming soon</a>{% endif %}
+        <a href="{% url 'about' %}">About</a>
+        {% if user.is_authenticated %}<a class="nav-action" href="{% url 'logout' %}">Sign out</a>{% else %}<a class="nav-action" href="{% url 'login' %}">Sign in</a>{% endif %}
+      </div>
+    </div>
+  </nav>
+  {% if messages %}<div class="flash-wrap">{% for message in messages %}<div class="flash">{{ message }}</div>{% endfor %}</div>{% endif %}
+  <main>{% block content %}{% endblock %}</main>
 </body>
 </html>
