@@ -1,41 +1,36 @@
 {% extends "couriermanage/base.html" %}
 {% block content %}
-<style type="text/css">
-</style>
-  <h1 style="padding-left: 20px;">Welcome :)</h1><br>
-  <h5 style="padding-left: 20px;">Please visit Your nearest Shiply centre to collect your package.</h5>
-  <h5 style="padding-left: 20px;">Packages recieved as of now: </h5><br>
+<section class="page-shell">
+  <div class="dashboard-top">
+    <div>
+      <span class="eyebrow">Collection desk</span>
+      <h1 class="page-title">Your packages</h1>
+      <p class="page-intro">Visit your nearest Shiplify centre when you are ready to collect.</p>
+    </div>
+    <form class="search-box" method="get" role="search">
+      <input type="search" name="q" value="{{ query }}" placeholder="Search package number" aria-label="Search package number">
+      <button class="button" type="submit">Search</button>
+    </form>
+  </div>
   {% if page_obj %}
-    <ol>
+    <div class="package-grid">
       {% for courier in page_obj %}
-      <div class="card" style="width: 25rem;">
-        <div class="card-body" style="padding-left: 45px;">
-          <li>
-            <h5 class="card-title">{{ courier.name }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ courier.student_rollno }}</h6>
-            <p class="card-text">Date recieved: {{ courier.date_recieved }}</p>
-            <p class="card-text">Service: {{ courier.service }}</p>
-          </li>
-        </div>
-      </div><br>
+      <article class="package-card">
+        <h2>{{ courier.name }}</h2>
+        <div class="package-number">Package {{ courier.package_no }}</div>
+        <div class="package-meta">Arrived {{ courier.date_recieved }}<br>Handled by {{ courier.service }}</div>
+      </article>
       {% endfor %}
-    </ol>
-    <nav aria-label="Page navigation example">
-      <ul class="pagination justify-content-center">
-        {% if page_obj.has_previous %}
-        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
-        {% endif %}
-        <li class="page-item"><a class="page-link" href="?page={{ page_obj.number }}">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
-        {% if page_obj.has_next %}
-        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
-        {% endif %}
+    </div>
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        {% if page_obj.has_previous %}<li><a href="?q={{ query|urlencode }}&page={{ page_obj.previous_page_number }}">Previous</a></li>{% endif %}
+        <li><a href="?q={{ query|urlencode }}&page={{ page_obj.number }}">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
+        {% if page_obj.has_next %}<li><a href="?q={{ query|urlencode }}&page={{ page_obj.next_page_number }}">Next</a></li>{% endif %}
       </ul>
     </nav>
   {% else %}
-    <center>
-    <div style="margin-top: 170px">
-      <h4>Could'nt find any packages for you.<br>Make sure you typed your Delivery partner correct.</h3>
-    </div>
-    </center>
+    <div class="empty-state"><h2>No packages found</h2><p class="page-intro">Try a different package number.</p></div>
   {% endif %}
+</section>
 {% endblock content %}
