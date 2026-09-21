@@ -1,0 +1,7 @@
+{% extends "couriermanage/base.html" %}
+{% block content %}
+<section class="page-shell login-layout">
+  <div class="login-intro"><span class="eyebrow">Parcel operations, made clear</span><h1 class="page-title">Every delivery,<br><em>right where it belongs.</em></h1><p class="page-intro">Sign in to keep incoming packages and collections moving.</p></div>
+  <div class="surface form-area"><h2>Welcome back</h2><p class="page-intro">Open your package desk.</p><form method="POST">{% csrf_token %}{{ form.as_p }}<div class="form-actions"><button class="button" type="submit">Sign in</button></div></form><p><a href="{% url 'password_reset' %}">Forgot your password?</a></p><p>New to Shiplify? <a href="{% url 'register' %}">Create an account</a></p></div>
+</section>
+{% endblock content %}
