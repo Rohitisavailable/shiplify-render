@@ -134,6 +134,7 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
+WHITENOISE_USE_FINDERS = True
 
 STORAGES = {
     'default': {
