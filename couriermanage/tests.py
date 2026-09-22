@@ -31,7 +31,12 @@ class CourierPageTests(TestCase):
 		self.assertContains(home_response, 'https://github.com/Rohitisavailable')
 		self.assertContains(home_response, 'href="/main/"')
 		self.assertContains(home_response, 'href="/upcoming/"')
+		self.assertContains(home_response, 'Sign in to Shiplify')
 		self.assertEqual(self.client.get('/login/').status_code, 200)
+
+		self.client.force_login(self.user)
+		authenticated_home = self.client.get('/')
+		self.assertNotContains(authenticated_home, 'Sign in to Shiplify')
 
 	def test_dashboard_requires_authentication(self):
 		response = self.client.get('/main/')
