@@ -1,3 +1,8 @@
+databases:
+  - name: shiplify-db
+    databaseName: shiplify
+    user: shiplify
+
 services:
   - type: web
     name: shiplify-render
@@ -9,3 +14,7 @@ services:
         value: 3.13.5
       - key: DJANGO_ENV
         value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: shiplify-db
+          property: connectionString

@@ -37,7 +37,7 @@ Shiplify is a Django courier-management application for tracking incoming packag
 - Python 3.13
 - Django 5.1.7
 - SQLite for local development
-- PostgreSQL through `dj-database-url` in production
+- PostgreSQL through `DATABASE_URL` in production
 - Gunicorn application server
 - WhiteNoise for static assets
 - Custom CSS in `static/css/app.css`
@@ -114,6 +114,8 @@ Production should set:
 - `EMAIL_BACKEND` and SMTP variables if email delivery is required
 
 The local default email backend is the console backend so password-reset flows can be tested without placeholder SMTP credentials.
+
+Production must use a persistent PostgreSQL database. The application intentionally raises a configuration error when `DJANGO_ENV=production` is set without `DATABASE_URL`; this prevents user accounts and courier records from being stored in Render's temporary filesystem-backed SQLite database.
 
 ## Project Structure
 
