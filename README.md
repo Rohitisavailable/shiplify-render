@@ -1,158 +1,138 @@
-# Shiplify - Courier Management System
+# Shiplify
 
-A Django-based Courier Management System (CMS) designed to help manage courier deliveries, track packages, and maintain inventory stock.
+Shiplify is a Django courier-management application for tracking incoming packages and keeping collection teams organized. The public home page explains the product, while authenticated users get a focused package desk and administrators manage courier records through Django Admin.
 
-## 🌐 Live Demo
+## Live Application
 
-**Live Application:** [https://shiplify-render.onrender.com/](https://shiplify-render.onrender.com/)
+- Public home: [shiplify-render.onrender.com](https://shiplify-render.onrender.com/)
+- Repository: [github.com/Rohitisavailable/shiplify-render](https://github.com/Rohitisavailable/shiplify-render)
 
-## 📖 Description
+## Features
 
-Shiplify is a web-based courier management system built with Django that provides a comprehensive solution for managing courier services. The application includes user authentication, courier tracking, and inventory management features.
+- Public logistics-focused home page with warehouse and shipping imagery
+- User registration, login, logout, and password reset flows
+- Authenticated package dashboard with pagination
+- Package-number-only search
+- Django Admin management for courier records
+- Upcoming-features roadmap page linked beside the dashboard
+- Responsive custom CSS UI with desktop and mobile layouts
+- GitHub and LinkedIn profile links in the public home page
+- WhiteNoise static-file serving for production
 
-## ✨ Features
+## Application Routes
 
-- **User Authentication System**
-  - User registration and login
-  - Password reset functionality
-  - Secure authentication with Django's built-in authentication system
+| Route | Purpose | Access |
+| --- | --- | --- |
+| `/` | Public Shiplify home page | Public |
+| `/login/` | User sign-in | Public |
+| `/register/` | Create an account | Public |
+| `/password-reset/` | Request a password reset | Public |
+| `/main/` | Package dashboard and package-number search | Authenticated |
+| `/upcoming/` | Upcoming features roadmap | Authenticated |
+| `/about/` | Product information | Public |
+| `/admin/` | Django administration | Staff |
 
-- **Courier Management**
-  - Track courier deliveries
-  - Record package information (name, service, package number, date received)
-  - Search and filter courier records
-  - Paginated courier listing
+## Technology
 
-- **Stock Management**
-  - Inventory tracking system
-  - Track item categories and quantities
-  - Record receive and issue transactions
-  - Monitor stock levels with reorder level alerts
-  - Export data to CSV
+- Python 3.13
+- Django 5.1.7
+- SQLite for local development
+- PostgreSQL through `dj-database-url` in production
+- Gunicorn application server
+- WhiteNoise for static assets
+- Custom CSS in `static/css/app.css`
+- PostgreSQL driver: `psycopg2-binary`
 
-- **Admin Dashboard**
-  - Django admin interface for managing all data
-  - User management capabilities
+## Local Setup
 
-## 🛠️ Technology Stack
-
-- **Backend Framework:** Django 5.1.7
-- **Database:** SQLite (development), PostgreSQL (production via dj-database-url)
-- **Web Server:** Gunicorn 23.0.0
-- **Frontend Styling:** 
-  - Bootstrap 4 & Bootstrap 5
-  - Django Crispy Forms for form rendering
-- **Other Libraries:**
-  - BeautifulSoup4 for web scraping
-  - psycopg2-binary for PostgreSQL support
-
-## 📋 Prerequisites
-
-- Python 3.x
-- pip (Python package manager)
-- Virtual environment (recommended)
-
-## 🚀 Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Rohitisavailable/shiplify-render.git
-   cd shiplify-render
-   ```
-
-2. **Create and activate a virtual environment**
-   ```bash
-   # On Windows
-   python -m venv venv
-   venv\Scripts\activate
-
-   # On macOS/Linux
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Apply database migrations**
-   ```bash
-   python manage.py migrate
-   ```
-
-5. **Create a superuser (admin account)**
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-6. **Run the development server**
-   ```bash
-   python manage.py runserver
-   ```
-
-7. **Access the application**
-   - Open your browser and navigate to `http://127.0.0.1:8000/`
-   - Admin panel: `http://127.0.0.1:8000/admin/`
-
-## 📱 Usage
-
-1. **Login/Register**
-   - Visit the home page and login with your credentials
-   - New users can register through the registration page
-
-2. **Managing Couriers**
-   - Navigate to the main page to view all courier records
-   - Use the search functionality to find specific packages
-   - View paginated results for better organization
-
-3. **Admin Functions**
-   - Access the admin panel at `/admin/`
-   - Manage users, couriers, and stock items
-   - Configure system settings
-
-## 📂 Project Structure
-
+```bash
+git clone https://github.com/Rohitisavailable/shiplify-render.git
+cd shiplify-render
+python -m venv .venv
 ```
+
+Activate the environment:
+
+```powershell
+# Windows PowerShell
+.\.venv\Scripts\Activate.ps1
+```
+
+```bash
+# macOS or Linux
+source .venv/bin/activate
+```
+
+Install dependencies, migrate the database, and collect static files:
+
+```bash
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py collectstatic --no-input
+```
+
+Create an administrator when needed:
+
+```bash
+python manage.py createsuperuser
+```
+
+Run the development server:
+
+```bash
+python manage.py runserver
+```
+
+Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
+
+## Testing and Checks
+
+Run the system checks and regression tests with:
+
+```bash
+python manage.py check
+python manage.py test
+```
+
+The test suite covers public home and login routes, authentication redirects, package-number search, social links, and nullable stock values.
+
+## Render Deployment
+
+The repository includes `render.yaml`. Render uses these commands:
+
+```bash
+pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate
+gunicorn CMS.wsgi:application
+```
+
+Production should set:
+
+- `DJANGO_ENV=production`
+- `SECRET_KEY` to a long random value
+- `ALLOWED_HOSTS` to the deployed hostnames
+- `DATABASE_URL` for PostgreSQL
+- `EMAIL_BACKEND` and SMTP variables if email delivery is required
+
+The local default email backend is the console backend so password-reset flows can be tested without placeholder SMTP credentials.
+
+## Project Structure
+
+```text
 shiplify-render/
-├── CMS/                  # Main Django project settings
-│   ├── settings.py      # Project configuration
-│   ├── urls.py          # URL routing
-│   └── wsgi.py          # WSGI configuration
-├── couriermanage/       # Courier management app
-│   ├── models.py        # Courier data models
-│   ├── views.py         # Courier views
-│   └── templates/       # Courier templates
-├── users/               # User authentication app
-│   ├── models.py        # Stock/User models
-│   ├── views.py         # User views
-│   └── templates/       # User templates
-├── static/              # Static files (CSS, JS, images)
-├── manage.py            # Django management script
-└── requirements.txt     # Python dependencies
+├── CMS/                         # Django project settings and URLs
+├── couriermanage/               # Courier model, dashboard, admin, templates
+├── users/                       # Registration, stock model, auth templates
+├── static/                      # Source CSS and images
+├── staticfiles/                 # Collected static assets
+├── manage.py
+├── render.yaml                  # Render build and start configuration
+├── requirements.txt
+└── README.md
 ```
 
-## 🔐 Security Notes
+## Author
 
-- Change the `SECRET_KEY` in production
-- Set `DEBUG = False` in production
-- Configure `ALLOWED_HOSTS` properly
-- Use environment variables for sensitive data
+Rohit Mahajan
 
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome!
-
-## 📝 License
-
-This project is available for educational and personal use.
-
-## 👨‍💻 Author
-
-**Rohit**
-- GitHub: [@Rohitisavailable](https://github.com/Rohitisavailable)
-
-## 🔗 Links
-
-- **GitHub Repository:** [https://github.com/Rohitisavailable/shiplify-render](https://github.com/Rohitisavailable/shiplify-render)
-- **Live Demo:** [https://shiplify-render.onrender.com/](https://shiplify-render.onrender.com/)
+- GitHub: [Rohitisavailable](https://github.com/Rohitisavailable)
+- LinkedIn: [rohit-mahajan1202](https://www.linkedin.com/in/rohit-mahajan1202/)
