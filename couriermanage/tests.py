@@ -29,12 +29,22 @@ class CourierPageTests(TestCase):
 		self.assertEqual(home_response.status_code, 200)
 		self.assertContains(home_response, 'Shipping that keeps its')
 		self.assertContains(home_response, 'https://github.com/Rohitisavailable')
+		self.assertContains(home_response, 'href="/main/"')
+		self.assertContains(home_response, 'href="/upcoming/"')
 		self.assertEqual(self.client.get('/login/').status_code, 200)
 
 	def test_dashboard_requires_authentication(self):
 		response = self.client.get('/main/')
 
 		self.assertRedirects(response, '/login/?next=/main/')
+
+	def test_logout_redirects_to_public_home(self):
+		self.client.force_login(self.user)
+
+		response = self.client.post('/logout/')
+
+		self.assertRedirects(response, '/')
+		self.assertFalse(response.wsgi_request.user.is_authenticated)
 
 	def test_dashboard_search_filters_by_package_number(self):
 		self.client.force_login(self.user)

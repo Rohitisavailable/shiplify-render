@@ -8,16 +8,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}?v=20260922">
 </head>
 <body>
   <nav class="site-nav">
     <div class="nav-inner">
       <a class="brand" href="{% url 'service-home' %}"><span class="brand-mark">S</span><span>shiplify</span></a>
       <div class="nav-links">
-        {% if user.is_authenticated %}<a href="{% url 'main' %}">Dashboard</a><a href="{% url 'upcoming' %}">Coming soon</a>{% endif %}
+        <a href="{% url 'main' %}">Dashboard</a><a href="{% url 'upcoming' %}">Coming soon</a>
         <a href="{% url 'about' %}">About</a>
-        {% if user.is_authenticated %}<a class="nav-action" href="{% url 'logout' %}">Sign out</a>{% else %}<a class="nav-action" href="{% url 'login' %}">Sign in</a>{% endif %}
+        {% if user.is_authenticated %}<form class="nav-logout" method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="nav-action" type="submit">Sign out</button></form>{% else %}<a class="nav-action" href="{% url 'login' %}">Sign in</a>{% endif %}
       </div>
     </div>
   </nav>

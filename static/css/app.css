@@ -11,6 +11,9 @@ a:hover { color: #0b5d57; }
 .nav-links { align-items: center; display: flex; gap: 24px; }
 .nav-links a { color: #d9e2ec; font-size: .92rem; font-weight: 600; }
 .nav-links .nav-action { border: 1px solid #829ab1; border-radius: 5px; color: var(--white); padding: 10px 15px; }
+.nav-logout { margin: 0; }
+.nav-logout .nav-action { appearance: none; -webkit-appearance: none; background: var(--ink) !important; background-image: none !important; border: 1px solid #829ab1 !important; border-radius: 5px; box-shadow: none !important; color: var(--white) !important; cursor: pointer; font: inherit; font-size: .92rem; font-weight: 600; padding: 10px 15px; }
+.nav-logout .nav-action:hover { background: #1b405f !important; color: var(--white) !important; }
 .flash-wrap { margin: 18px auto 0; max-width: 1124px; padding: 0 28px; }
 .flash { background: #e0f2f1; border-left: 4px solid var(--teal); border-radius: 4px; color: #134e4a; padding: 13px 16px; }
 .page-shell { margin: 0 auto; max-width: 1180px; padding: 56px 28px 80px; }
